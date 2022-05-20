@@ -11,10 +11,7 @@ using namespace std::chrono_literals;
 using namespace std::this_thread;
 
 int main() {
-	int clockType;
-	cout << "Enter 1 for auto-refreshing clock or 2 for enabling menu options => ";
-	cin >> clockType;
-
+	bool clockAutoRefresh = false;
 	bool quitProgram = false;
 	 Clock theClock;
 
@@ -23,7 +20,7 @@ int main() {
 		theClock.displayTime();
 		cout << endl;
 
-		if (clockType != 1) {
+		if (!clockAutoRefresh) {
 			Clock::displayClockMenu();
 			auto menuSelection = Clock::getClockMenuSelection();
 
@@ -38,6 +35,11 @@ int main() {
 					theClock.addOneSecond();
 					break;
 				case 4:
+					quitProgram = true;
+					break;
+				case 5:
+					clockAutoRefresh = theClock.enableAutoRefresh();
+					break;
 				default:
 					quitProgram = true;
 			}

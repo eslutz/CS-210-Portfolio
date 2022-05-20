@@ -28,6 +28,37 @@ namespace ChadaTechClock {
 		this->second = tm_local->tm_sec;
 	}
 
+	[[maybe_unused]] Clock::Clock(unsigned int hour,
+								  unsigned int minute,
+								  unsigned int second,
+								  bool set12HrClock,
+								  bool setPM) {
+		if (second >= 60) {
+			throw out_of_range ("Second must be less than 60");
+		}
+		if (minute >= 60) {
+			throw out_of_range ("Minute must be less than 60");
+		}
+		if (set12HrClock && hour > 12){
+			throw out_of_range ("Hour must be less than or equal to 12");
+		}
+		else if (hour >= 24) {
+			throw out_of_range ("Hour must be less than 24");
+		}
+
+		if (!set12HrClock || (setPM && hour == 12)) {
+			this->hour = hour;
+		}
+		else if (setPM && hour < 12) {
+			this->hour = hour + 12;
+		}
+		else {
+			this->hour = 0;
+		}
+		this->minute = minute;
+		this->second = second;
+	}
+
 	void Clock::addOneHour() {
 		this->hour = (this->hour == 23) ? 0 : this->hour + 1;
 	}
@@ -123,11 +154,16 @@ namespace ChadaTechClock {
 		menuWidth += fixedMenuContentWidth + 6;
 
 		cout << Utilities::repeatingChar('*', menuWidth) << endl;
-		for (int i = 0; i < size(menuOptions); i++) {
+		unsigned int i;
+		for (i = 0; i < size(menuOptions) - 1; i++) {
 			cout << "* " << i+1 << " - " << menuOptions[i];
 			cout << Utilities::repeatingChar(' ', (menuWidth - fixedMenuContentWidth - menuOptions[i].length()));
 			cout << "*" << endl;
 		}
+		cout << "* " << Utilities::repeatingChar('-', menuWidth - 4) << " *" << endl;
+		cout << "* " << i+1 << " - " << menuOptions[i];
+		cout << Utilities::repeatingChar(' ', (menuWidth - fixedMenuContentWidth - menuOptions[i].length()));
+		cout << "*" << endl;
 		cout << Utilities::repeatingChar('*', menuWidth) << endl;
 	}
 
@@ -159,11 +195,31 @@ namespace ChadaTechClock {
 	}
 
 	void Clock::updateClockTime() {
-		long timeElapsed = time(nullptr) - this->startTime;
+		// Determines elapsed time since clock last refreshed.
+		long currentTime = time(nullptr);
+		long timeElapsed = currentTime - this->startTime;
+		this->startTime = currentTime;
+
+		// Updates clock time.
 		if(timeElapsed >= 1) {
 			for (int i = 0; i < timeElapsed; i++) {
 				addOneSecond();
 			}
+		}
+	}
+
+	bool Clock::enableAutoRefresh() {
+		Utilities::clearScreen();
+		char userRefreshSelection;
+		cout << "Clock Auto Refresh" << endl <<endl;
+		cout << "This will disable menu access and will start an infinite loop." << endl;
+		cout << "Are you sure you want to continue (y/n) => ";
+		cin >> userRefreshSelection;
+		if (tolower(userRefreshSelection) == 'y') {
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
 

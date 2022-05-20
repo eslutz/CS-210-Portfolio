@@ -17,7 +17,8 @@ namespace ChadaTechClock {
 				"Add One Hour",
 				"Add One Minute",
 				"Add One Second",
-				"Exit"
+				"Exit",
+				"Enable Clock Auto Refresh"
 		};
 		unsigned int hour;
 		unsigned int minute;
@@ -27,6 +28,11 @@ namespace ChadaTechClock {
 		[[nodiscard]] string get12HrTime() const;
 	public:
 		Clock();
+		[[maybe_unused]] Clock(unsigned int hour,
+									  unsigned int minute,
+									  unsigned int second,
+									  bool set12HrClock = false,
+									  bool setPM = false);
 		void displayTime();
 		static void displayClockMenu();
 		static unsigned int getClockMenuSelection();
@@ -34,7 +40,7 @@ namespace ChadaTechClock {
 		void addOneMinute();
 		void addOneSecond();
 		void updateClockTime();
-
+		bool enableAutoRefresh();
 	};
 
 } // ChadaTechClock
