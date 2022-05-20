@@ -6,6 +6,7 @@
 #include "Utilities.h"
 
 #include <iostream>
+#include <limits>
 #include <sstream>
 #include <stdexcept>
 
@@ -215,6 +216,7 @@ namespace ChadaTechClock {
 		cout << "This will disable menu access and will start an infinite loop." << endl;
 		cout << "Are you sure you want to continue (y/n) => ";
 		cin >> userRefreshSelection;
+		cin.ignore(numeric_limits<int>::max(),'\n');
 		if (tolower(userRefreshSelection) == 'y') {
 			return true;
 		}
