@@ -1,7 +1,3 @@
-//
-// Created by Eric Slutz on 5/18/22.
-//
-
 #ifndef PROJECT_1_CLOCK_H
 #define PROJECT_1_CLOCK_H
 
@@ -28,11 +24,6 @@ namespace ChadaTechClock {
 		[[nodiscard]] string get12HrTime() const;
 	public:
 		Clock();
-		[[maybe_unused]] Clock(unsigned int hour,
-									  unsigned int minute,
-									  unsigned int second,
-									  bool set12HrClock = false,
-									  bool setPM = false);
 		void displayTime();
 		static void displayClockMenu();
 		static unsigned int getClockMenuSelection();
@@ -40,9 +31,9 @@ namespace ChadaTechClock {
 		void addOneMinute();
 		void addOneSecond();
 		void updateClockTime();
-		bool enableAutoRefresh();
+		static bool enableAutoRefresh();
 	};
 
-} // ChadaTechClock
+}
 
 #endif //PROJECT_1_CLOCK_H

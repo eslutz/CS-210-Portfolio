@@ -1,7 +1,3 @@
-//
-// Created by Eric Slutz on 5/19/22.
-//
-
 #ifndef PROJECT_1_UTILITIES_H
 #define PROJECT_1_UTILITIES_H
 
@@ -18,6 +14,6 @@ namespace ChadaTechClock {
 		static void clearScreen();
 	};
 
-} // ChadaTechClock
+}
 
 #endif //PROJECT_1_UTILITIES_H

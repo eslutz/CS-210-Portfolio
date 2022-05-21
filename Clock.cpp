@@ -1,7 +1,3 @@
-//
-// Created by Eric Slutz on 5/18/22.
-//
-
 #include "Clock.h"
 #include "Utilities.h"
 
@@ -13,51 +9,19 @@
 using namespace std;
 
 namespace ChadaTechClock {
-	// TODO: get clock to auto-refresh.
-	// TODO: comment all the things!!!
 
 	// Clock default constructor that initializes clock to current local time
 	Clock::Clock() {
 		// Gets current local time (24 hr format).
 		time_t currentTime = time(nullptr);
-		tm *tm_local = localtime(&currentTime);
-		this->startTime = currentTime;
+		tm localTime{};
+		localtime_r(&currentTime, &localTime);
+		this->startTime = (unsigned int)currentTime;
 
 		// Sets 24 hr time.
-		this->hour = tm_local->tm_hour;
-		this->minute = tm_local->tm_min;
-		this->second = tm_local->tm_sec;
-	}
-
-	[[maybe_unused]] Clock::Clock(unsigned int hour,
-								  unsigned int minute,
-								  unsigned int second,
-								  bool set12HrClock,
-								  bool setPM) {
-		if (second >= 60) {
-			throw out_of_range ("Second must be less than 60");
-		}
-		if (minute >= 60) {
-			throw out_of_range ("Minute must be less than 60");
-		}
-		if (set12HrClock && hour > 12){
-			throw out_of_range ("Hour must be less than or equal to 12");
-		}
-		else if (hour >= 24) {
-			throw out_of_range ("Hour must be less than 24");
-		}
-
-		if (!set12HrClock || (setPM && hour == 12)) {
-			this->hour = hour;
-		}
-		else if (setPM && hour < 12) {
-			this->hour = hour + 12;
-		}
-		else {
-			this->hour = 0;
-		}
-		this->minute = minute;
-		this->second = second;
+		this->hour = localTime.tm_hour;
+		this->minute = localTime.tm_min;
+		this->second = localTime.tm_sec;
 	}
 
 	void Clock::addOneHour() {
@@ -104,7 +68,7 @@ namespace ChadaTechClock {
 		else if (hourFor12HrTime == 12) {
 			amOrPm = "P M";
 		}
-		else if (hourFor12HrTime > 12){
+		else if (hourFor12HrTime > 12) {
 			hourFor12HrTime = hourFor12HrTime - 12;
 			amOrPm = "P M";
 		}
@@ -122,6 +86,7 @@ namespace ChadaTechClock {
 	}
 
 	void Clock::displayTime() {
+		Utilities::clearScreen();
 		// Top line.
 		cout << Utilities::repeatingChar('*', 27);
 		cout << Utilities::repeatingChar(' ', 3);
@@ -148,8 +113,9 @@ namespace ChadaTechClock {
 		const unsigned int fixedMenuContentWidth = 7;
 		unsigned int menuWidth = 0;
 		for (string_view menuOption : menuOptions) {
-			if (menuOption.length() > menuWidth) {
-				menuWidth = menuOption.length();
+			auto menuOptionLength = (unsigned int)menuOption.length();
+			if (menuOptionLength > menuWidth) {
+				menuWidth = menuOptionLength;
 			}
 		}
 		menuWidth += fixedMenuContentWidth + 6;
@@ -157,13 +123,13 @@ namespace ChadaTechClock {
 		cout << Utilities::repeatingChar('*', menuWidth) << endl;
 		unsigned int i;
 		for (i = 0; i < size(menuOptions) - 1; i++) {
-			cout << "* " << i+1 << " - " << menuOptions[i];
-			cout << Utilities::repeatingChar(' ', (menuWidth - fixedMenuContentWidth - menuOptions[i].length()));
+			cout << "* " << i + 1 << " - " << menuOptions[i];
+			cout << Utilities::repeatingChar(' ', (menuWidth - fixedMenuContentWidth - (unsigned int)menuOptions[i].length()));
 			cout << "*" << endl;
 		}
 		cout << "* " << Utilities::repeatingChar('-', menuWidth - 4) << " *" << endl;
-		cout << "* " << i+1 << " - " << menuOptions[i];
-		cout << Utilities::repeatingChar(' ', (menuWidth - fixedMenuContentWidth - menuOptions[i].length()));
+		cout << "* " << i + 1 << " - " << menuOptions[i];
+		cout << Utilities::repeatingChar(' ', (menuWidth - fixedMenuContentWidth - (unsigned int)menuOptions[i].length()));
 		cout << "*" << endl;
 		cout << Utilities::repeatingChar('*', menuWidth) << endl;
 	}
@@ -181,14 +147,15 @@ namespace ChadaTechClock {
 				// Attempt to parse the input as an unsigned int.
 				userSelection = stoul(userInput);
 				// Check that it is a positive integer.
-				if ( userSelection == 0 || userSelection > size(menuOptions)) {
-					throw out_of_range ("Not a valid menu option");
+				if (userSelection == 0 || userSelection > size(menuOptions)) {
+					throw out_of_range("Not a valid menu option");
 				}
 			}
 			catch (...) {
 				// Prompt user for input again.
 				Utilities::clearScreen();
-				cout << "\nNot a valid menu option. Try again." << endl;
+				displayClockMenu();
+				cout << "Not a valid menu option. Try again." << endl;
 			}
 		}
 
@@ -197,12 +164,12 @@ namespace ChadaTechClock {
 
 	void Clock::updateClockTime() {
 		// Determines elapsed time since clock last refreshed.
-		long currentTime = time(nullptr);
+		long currentTime = (long)time(nullptr);
 		long timeElapsed = currentTime - this->startTime;
 		this->startTime = currentTime;
 
 		// Updates clock time.
-		if(timeElapsed >= 1) {
+		if (timeElapsed >= 1) {
 			for (int i = 0; i < timeElapsed; i++) {
 				addOneSecond();
 			}
@@ -212,11 +179,11 @@ namespace ChadaTechClock {
 	bool Clock::enableAutoRefresh() {
 		Utilities::clearScreen();
 		char userRefreshSelection;
-		cout << "Clock Auto Refresh" << endl <<endl;
+		cout << "Clock Auto Refresh" << endl << endl;
 		cout << "This will disable menu access and will start an infinite loop." << endl;
 		cout << "Are you sure you want to continue (y/n) => ";
 		cin >> userRefreshSelection;
-		cin.ignore(numeric_limits<int>::max(),'\n');
+		cin.ignore(numeric_limits<int>::max(), '\n');
 		if (tolower(userRefreshSelection) == 'y') {
 			return true;
 		}
@@ -225,4 +192,4 @@ namespace ChadaTechClock {
 		}
 	}
 
-} // ChadaTechClock
+}

@@ -1,7 +1,3 @@
-//
-// Created by Eric Slutz on 5/19/22.
-//
-
 #include "Utilities.h"
 
 #include <cstdlib>
@@ -21,17 +17,17 @@ namespace ChadaTechClock {
 	string Utilities::repeatingChar(char repeatingChar, unsigned int repeatQuantity) {
 		ostringstream outputString;
 
-		outputString << setw(repeatQuantity) << setfill(repeatingChar)  << "";
+		outputString << setw(repeatQuantity) << setfill(repeatingChar) << "";
 
 		return outputString.str();
 	}
 
 	void Utilities::clearScreen() {
-#ifdef WINDOWS
+#ifdef _WIN32
 		system("cls");
 #else
-		system ("clear");
+		system("clear");
 #endif
 	}
 
-} // ChadaTechClock
+}
