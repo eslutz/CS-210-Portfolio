@@ -1,3 +1,11 @@
+/**
+ * Eric Slutz
+ * CS-210
+ * Project 1
+ *
+ * Utilities Header
+ */
+
 #ifndef PROJECT_1_UTILITIES_H
 #define PROJECT_1_UTILITIES_H
 
@@ -7,10 +15,12 @@ using namespace std;
 
 namespace ChadaTechClock {
 
+	/**
+	 * Utilities class for general methods.
+	 */
 	class Utilities {
 	public:
-		static string leadingChar(char leadingChar, unsigned int leadingRepeat, const string& input);
-		static string repeatingChar(char repeatingChar, unsigned int repeatQuantity);
+		static string repeatingChar(char leadingChar, unsigned int leadingRepeat, const string& input = "");
 		static void clearScreen();
 	};
 

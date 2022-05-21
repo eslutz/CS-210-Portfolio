@@ -1,3 +1,11 @@
+/**
+ * Eric Slutz
+ * CS-210
+ * Project 1
+ *
+ * Clock Header
+ */
+
 #ifndef PROJECT_1_CLOCK_H
 #define PROJECT_1_CLOCK_H
 
@@ -7,8 +15,12 @@ using namespace std;
 
 namespace ChadaTechClock {
 
+	/**
+	 * Clock class for defining the functionality of a clock.
+	 */
 	class Clock {
 	private:
+		// Menu options for what can be done with the clock.
 		constexpr static string_view menuOptions[] = {
 				"Add One Hour",
 				"Add One Minute",
@@ -16,12 +28,13 @@ namespace ChadaTechClock {
 				"Exit",
 				"Enable Clock Auto Refresh"
 		};
+		// Private variables.
 		unsigned int hour;
 		unsigned int minute;
 		unsigned int second;
-		unsigned int startTime;
-		[[nodiscard]] string get24HrTime() const;
-		[[nodiscard]] string get12HrTime() const;
+		unsigned int timeLastRefreshed;
+		// Private method.
+		[[nodiscard]] string getFormattedTime(bool clock12Hr = false) const;
 	public:
 		Clock();
 		void displayTime();
