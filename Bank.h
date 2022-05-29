@@ -30,7 +30,7 @@ private:
 	vector<double> m_interestEarned;
 public:
 	Bank(double t_initialInvestment, double t_monthlyDeposit, double t_annualInterestRate, int t_years);
-	static void bankMenu();
+	static void bankMenu(const string& t_menuInputError);
 	static unsigned int getBankMenuSelection();
 	static Bank startInvestment();
 	string getInvestmentReport(bool includeMonthlyDeposit = false);

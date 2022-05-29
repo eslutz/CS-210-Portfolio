@@ -1,6 +1,7 @@
 //
 // Created by Eric Slutz on 5/27/22.
 //
+#include <array>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -86,10 +87,10 @@ Bank Bank::startInvestment() {
 	return {initialInvestment, monthlyDeposit, interestRate, years};
 }
 
-void Bank::bankMenu() {
+void Bank::bankMenu(const string& t_menuInputError) {
 	Utilities::clearScreen();
 	const string MENU_HEADER = "airgad banking menu";
-	cout << Utilities::generateHeader(MENU_HEADER, HEADER_WIDTH);
+	cout << Utilities::generateHeader(MENU_HEADER, HEADER_WIDTH, false, t_menuInputError);
 
 	for (int i = 0; i < size(bankMenuOptions); i++) {
 		cout << i + 1 << ". - " << bankMenuOptions[i] << endl;
@@ -106,35 +107,31 @@ void Bank::bankMenu() {
  */
 unsigned int Bank::getBankMenuSelection() {
 	// Declares variables for storing the users input and the users validated selection.
-	string userInput;
-	unsigned int userSelection = 0;
+	unsigned int menuSelection = 0;
+	bool validMenuSelection = true;
+	ostringstream invalidInputString;
+	invalidInputString << "";
 
 	// Loops until the user makes a valid menu selection.
-	while (userSelection == 0 || userSelection > size(bankMenuOptions)) {
+	do {
+		Utilities::clearScreen();
+		if (!validMenuSelection) {
+			invalidInputString << "Not a valid menu option, please try again ";
+		}
+		// Display the bank menu.
+		bankMenu(invalidInputString.str());
 		// Gets the users input.
 		cout << "=> ";
-		cin >> userInput;
+		cin >> menuSelection;
 
-		// Check if user entered a valid menu option.
-		try {
-			// Attempt to parse the input as an unsigned int.
-			userSelection = stoul(userInput);
-			// Check that it is a positive integer and not larger than the available number of menu options.
-			if (userSelection == 0 || userSelection > size(bankMenuOptions)) {
-				throw out_of_range("Not a valid menu option");
-			}
-		}
-			// User entered an invalid option.
-		catch (...) {
-			// Prompt user for input again.
-			Utilities::clearScreen();
-			bankMenu();
-			cout << "Not a valid menu option. Try again." << endl;
-		}
-	}
+		long menuLength = *(&bankMenuOptions + 1) - bankMenuOptions;
+		validMenuSelection = !Utilities::validateInput(cin.fail()) && (menuSelection > 0 && menuSelection <= menuLength);
+		invalidInputString.str("");
+		//invalidInputString.clear();
+	} while (!validMenuSelection);
 
 	// Return the users validated menu selection.
-	return userSelection;
+	return menuSelection;
 }
 
 string Bank::getInvestmentReport(bool includeMonthlyDeposit) {

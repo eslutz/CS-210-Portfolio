@@ -9,7 +9,6 @@ int main() {
 	Bank airgead = Bank::startInvestment();
 
 	while (!quitProgram) {
-		Bank::bankMenu();
 		auto userSelection = Bank::getBankMenuSelection();
 		switch (userSelection) {
 			case 1:
