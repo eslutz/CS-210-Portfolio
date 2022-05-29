@@ -29,8 +29,6 @@ string Utilities::repeatingChar(char t_repeatingChar, unsigned int t_outputLengt
 	// Declares an output stream.
 	ostringstream outputString;
 
-	auto temp = size(t_input);
-
 	// Adds leading character in the desired format.
 	outputString << setw(t_outputLength) << setfill(t_repeatingChar) << t_input;
 
@@ -68,6 +66,15 @@ string Utilities::alternatingChar(char t_firstChar, char t_secondChar, unsigned 
 	return outputString.str();
 }
 
+string Utilities::formatNumber(unsigned int precision, const double t_input) {
+	// Declares an output stream.
+	ostringstream outputString;
+
+	outputString << fixed << setprecision(2) << setfill('0') << std::setw(1) << t_input;
+
+	// Returns the new string.
+	return outputString.str();
+}
 
 string Utilities::generateHeader(string t_headerValue, unsigned int t_headerWidth, bool t_swapMidline, const string& t_errorValue) {
 	// Declares an output stream.

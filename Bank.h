@@ -5,6 +5,7 @@
 #ifndef PROJECT_2_BANK_H
 #define PROJECT_2_BANK_H
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -21,19 +22,23 @@ private:
 			"Adjust Number of Years",
 			"Quit"
 	};
+	static const inline map<string, int> reportTableHeader = {
+			{"Year", 6},
+			{"Year End Balance", 42},
+			{"Year End Earned Interest", 42}
+	};
 	static const int HEADER_WIDTH = 64;
 	double m_initialInvestment;
 	double m_monthlyDeposit;
 	double m_annualInterestRate;
-	unsigned int m_months;
-	vector<double> m_balance;
-	vector<double> m_interestEarned;
+	double m_investmentBalance;
+	unsigned int m_years;
 public:
 	Bank(double t_initialInvestment, double t_monthlyDeposit, double t_annualInterestRate, int t_years);
 	static void bankMenu(const string& t_menuInputError);
 	static unsigned int getBankMenuSelection();
 	static Bank startInvestment();
-	string getInvestmentReport(bool includeMonthlyDeposit = false);
+	void getInvestmentReport(bool includeMonthlyDeposit = false);
 	void setInitialInvestment();
 	void setMonthlyDepositAmount();
 	void setAnnualInterestRate();

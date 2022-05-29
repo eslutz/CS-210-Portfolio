@@ -1,10 +1,10 @@
 //
 // Created by Eric Slutz on 5/27/22.
 //
-#include <array>
 #include <iostream>
+#include <map>
+#include <numeric>
 #include <sstream>
-#include <string>
 
 #include "Bank.h"
 #include "Utilities.h"
@@ -13,13 +13,13 @@ using namespace std;
 
 // TODO: complete menu actions.
 // TODO: check output formatting of numbers, verify only 2 decimal places displayed.
-// TODO: check header tail spacing.
+// TODO: comment all the code!
 
 Bank::Bank(double t_initialInvestment, double t_monthlyDeposit, double t_annualInterestRate, int t_years) {
 	this->m_initialInvestment = t_initialInvestment;
 	this->m_monthlyDeposit = t_monthlyDeposit;
 	this->m_annualInterestRate = t_annualInterestRate;
-	this->m_months = t_years * 12;
+	this->m_years = t_years;
 }
 
 Bank Bank::startInvestment() {
@@ -93,7 +93,7 @@ void Bank::bankMenu(const string& t_menuInputError) {
 	cout << Utilities::generateHeader(MENU_HEADER, HEADER_WIDTH, false, t_menuInputError);
 
 	for (int i = 0; i < size(bankMenuOptions); i++) {
-		cout << i + 1 << ". - " << bankMenuOptions[i] << endl;
+		cout << i + 1 << " - " << bankMenuOptions[i] << endl;
 	}
 
 	cout << Utilities::repeatingChar('*', HEADER_WIDTH) << endl;
@@ -124,18 +124,60 @@ unsigned int Bank::getBankMenuSelection() {
 		cout << "=> ";
 		cin >> menuSelection;
 
-		long menuLength = *(&bankMenuOptions + 1) - bankMenuOptions;
-		validMenuSelection = !Utilities::validateInput(cin.fail()) && (menuSelection > 0 && menuSelection <= menuLength);
+		validMenuSelection = !Utilities::validateInput(cin.fail()) && (menuSelection > 0 && menuSelection <= size(bankMenuOptions));
 		invalidInputString.str("");
-		//invalidInputString.clear();
 	} while (!validMenuSelection);
 
 	// Return the users validated menu selection.
 	return menuSelection;
 }
 
-string Bank::getInvestmentReport(bool includeMonthlyDeposit) {
-	return std::string();
+void Bank::getInvestmentReport(bool includeMonthlyDeposit) {
+	Utilities::clearScreen();
+
+	// Declares an output stream.
+	ostringstream outputString;
+	// Determines total width of the header based on the set width of each column.
+	const int REPORT_WIDTH = accumulate(reportTableHeader.begin(), reportTableHeader.end(), 0, [](const int prev_sum, const pair<const string, int>& entry) { return prev_sum + entry.second; });
+
+	// Sets the correct report title to display in the header.
+	const string depositHeaderPreposition = includeMonthlyDeposit ? "with" : "without";
+	const string INVESTMENT_REPORT_HEADER = "balance and interest " + depositHeaderPreposition + " additional monthly deposits";
+	// Adds the report header to the output.
+	outputString << Utilities::generateHeader(INVESTMENT_REPORT_HEADER, REPORT_WIDTH);
+	// Adds each column header to the output.
+	for (auto const& [key, val] : reportTableHeader) {
+		outputString << Utilities::repeatingChar(' ', val, key);
+	}
+	// Adds row seperator after the column headers.
+	outputString << endl << Utilities::repeatingChar('=', REPORT_WIDTH) << endl;
+
+	// Generates the report.
+	this->m_investmentBalance = this->m_initialInvestment;
+	for (int year = 1; year <= m_years; year++) {
+		double yearlyInterestEarned = 0;
+		for (int month = 1; month <= 12; month++) {
+			if (includeMonthlyDeposit) {
+				this->m_investmentBalance += this->m_monthlyDeposit;
+			}
+			double monthlyInterestEarned = this->m_investmentBalance * ((this->m_annualInterestRate / 100.0) / 12);
+			yearlyInterestEarned += monthlyInterestEarned;
+			this->m_investmentBalance += monthlyInterestEarned;
+		}
+
+		outputString << Utilities::repeatingChar(' ', 6, to_string(year))
+		<< Utilities::repeatingChar(' ', 42, "$" + Utilities::formatNumber(2, m_investmentBalance))
+		<< Utilities::repeatingChar(' ', 42, "$" + Utilities::formatNumber(2, yearlyInterestEarned))
+		<< endl;
+	}
+	outputString << Utilities::repeatingChar('*', REPORT_WIDTH) << endl;
+
+	cout << outputString.str();
+
+	cout << "(press Enter to return to menu)";
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	cin.get();
 }
 
 void Bank::setInitialInvestment() {
@@ -257,7 +299,7 @@ void Bank::setLengthOfInvestment() {
 		}
 
 		cout << Utilities::generateHeader(NUMBER_OF_YEARS_HEADER, HEADER_WIDTH, false, invalidInputString.str());
-		cout << "Original Number of Years: " << m_months / 12 << endl;
+		cout << "Original Number of Years: " << m_years << endl;
 		cout << "New Number of Years: ";
 		cin >> updatedYears;
 		invalidUpdatedYears = Utilities::validateInput(cin.fail()) || updatedYears <= 0;
@@ -271,5 +313,5 @@ void Bank::setLengthOfInvestment() {
 		getInput = !Utilities::confirmation("Are you satisfied with the new length of investment? (y/n) => ");
 	}
 
-	m_months = updatedYears * 12;
+	m_years = updatedYears;
 }
