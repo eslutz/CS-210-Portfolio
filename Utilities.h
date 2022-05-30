@@ -1,7 +1,7 @@
 /**
  * Eric Slutz
  * CS-210
- * Project 1
+ * Project 2
  *
  * Utilities Header
  */
@@ -18,10 +18,10 @@ using namespace std;
  */
 class Utilities {
 public:
-	static string repeatingChar(char t_leadingChar, unsigned int t_outputLength, const string& t_input = "");
-	static string alternatingChar(char t_firstChar, char t_secondChar, unsigned int t_outputLength, const string& t_input = "");
-	static string formatNumber(unsigned int precision, const double t_input);
-	static string generateHeader(string t_headerValue, unsigned int t_headerWidth, bool t_swapMidline = false, const string& t_errorValue = "");
+	static string repeatingChar(char t_leadingChar, int t_outputLength, const string& t_input = "");
+	static string alternatingChar(char t_firstChar, char t_secondChar, int t_outputLength, const string& t_input = "");
+	static string formatNumber(double t_input, int t_precision = 2);
+	static string generateHeader(string t_headerValue, int t_headerWidth, bool t_swapMidline = false, const string& t_errorValue = "");
 	static bool validateInput(bool t_inputState);
 	static bool confirmation(const string& t_confirmationMessage);
 	static void clearScreen();
