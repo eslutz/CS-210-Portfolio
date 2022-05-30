@@ -13,10 +13,6 @@
 #include "Bank.h"
 #include "Utilities.h"
 
-// TODO: update repeat width in the report method (line 240).
-// TODO: refactor set methods into one method.
-// TODO: verify code in Visual Studio.
-
 using namespace std;
 
 /**
@@ -238,15 +234,20 @@ void Bank::getInvestmentReport(bool includeMonthlyDeposit) {
 			this->m_investmentBalance += monthlyInterestEarned;
 		}
 
-		// Add generated data to the output for the year.
-		outputString << Utilities::repeatingChar(' ', 6, to_string(year))
-		<< Utilities::repeatingChar(' ',
-									42,
-									"$" + Utilities::formatNumber(m_investmentBalance))
-		<< Utilities::repeatingChar(' ',
-									42,
-									"$" + Utilities::formatNumber(yearlyInterestEarned))
-		<< endl;
+		// Add each output item to a string array to iterate through with the matching column width
+		string rowOutputValues[] = {to_string(year),
+									"$" + Utilities::formatNumber(m_investmentBalance),
+									"$" + Utilities::formatNumber(yearlyInterestEarned)};
+		// Declare an index for iterating through the string out value array.
+		int i = 0;
+		// Loop through each column in the table header map to get the width of the column.
+		for ( const auto& column : reportTableHeader) {
+			outputString << Utilities::repeatingChar(' ',
+													 column.second,
+													 rowOutputValues[i]);
+			i++;
+		}
+		outputString << endl;
 
 		// If not the last row of data, add a blank line between each row.
 		if (year != m_years) {
