@@ -6,12 +6,12 @@
  * Utilities Class
  */
 
-#include "Utilities.h"
-
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+
+#include "Utilities.h"
 
 using namespace std;
 
@@ -148,7 +148,7 @@ string Utilities::generateHeader(string t_headerValue, int t_headerWidth, bool t
  * @return true for a failure, false for no failure.
  */
 bool Utilities::validateInput(bool t_inputState) {
-	// If true, clear cin so it's ready for the next read attempt.
+	// If true, clear cin, so it's ready for the next read attempt.
 	if (t_inputState) {
 		cin.clear();
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
