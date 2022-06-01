@@ -94,6 +94,9 @@ Bank Bank::startInvestment() {
 		invalidInterestRate = Utilities::validateInput(cin.fail()) || interestRate < 0;
 		cout << "Number of Years: ";
 		cin >> years;
+		// Only grab integer portion on input.
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		invalidYears = Utilities::validateInput(cin.fail()) || years <= 0;
 
 		// If any input is invalid, set invalidInput to true and skip to start of the loop.
@@ -236,8 +239,8 @@ void Bank::getInvestmentReport(bool includeMonthlyDeposit) {
 
 		// Add each output item to a string array to iterate through with the matching column width
 		string rowOutputValues[] = {to_string(year),
-									"$" + Utilities::formatNumber(m_investmentBalance),
-									"$" + Utilities::formatNumber(yearlyInterestEarned)};
+									Utilities::formatMoney(m_investmentBalance),
+									Utilities::formatMoney(yearlyInterestEarned)};
 		// Declare an index for iterating through the string out value array.
 		int i = 0;
 		// Loop through each column in the table header map to get the width of the column.
@@ -429,7 +432,7 @@ void Bank::setLengthOfInvestment() {
 	// Declare variables needed for getting and validating input.
 	bool getInput = true,
 	invalidUpdatedYears = false;
-	unsigned int updatedYears = 0;
+	int updatedYears = 0;
 
 	// Loop until done getting input.
 	while (getInput) {
@@ -448,6 +451,9 @@ void Bank::setLengthOfInvestment() {
 		cout << "New Number of Years: ";
 		// Prompt for and get the new value.
 		cin >> updatedYears;
+		// Only grab integer portion on input.
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		// Validate the input.
 		invalidUpdatedYears = Utilities::validateInput(cin.fail()) || updatedYears <= 0;
 

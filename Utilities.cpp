@@ -8,6 +8,7 @@
 
 #include "Utilities.h"
 
+#include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -71,12 +72,12 @@ string Utilities::alternatingChar(char t_firstChar, char t_secondChar, int t_out
  * @param t_input the number to set precision on.
  * @return the formatted number.
  */
-string Utilities::formatNumber(double t_input, int t_precision) {
+string Utilities::formatMoney(double t_input) {
 	// Declares an output stream.
 	ostringstream outputString;
 
-	// Format the number and add it to the output.
-	outputString << fixed << setprecision(t_precision)  << t_input;
+	// Change the number to money format, then add it to the output.
+	outputString << fixed << setprecision(2)  << "$" << t_input;
 
 	// Returns the new string.
 	return outputString.str();

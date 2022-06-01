@@ -41,7 +41,7 @@ private:
 	double m_monthlyDeposit;
 	double m_annualInterestRate;
 	double m_investmentBalance{};
-	unsigned int m_years;
+	int m_years;
 public:
 	Bank(double t_initialInvestment, double t_monthlyDeposit, double t_annualInterestRate, int t_years);
 	static void bankMenu(const string& t_menuInputError = "");
