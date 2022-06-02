@@ -1,11 +1,7 @@
 /**
  * Eric Slutz
  * CS-210
-<<<<<<< HEAD
- * Project 1
-=======
  * Project 2
->>>>>>> remotes/repo2/main
  *
  * Utilities Header
  */
@@ -17,20 +13,6 @@
 
 using namespace std;
 
-<<<<<<< HEAD
-namespace ChadaTechClock {
-
-	/**
-	 * Utilities class for general methods.
-	 */
-	class Utilities {
-	public:
-		static string repeatingChar(char leadingChar, unsigned int leadingRepeat, const string& input = "");
-		static void clearScreen();
-	};
-
-}
-=======
 /**
  * Utilities class for general methods.
  */
@@ -44,6 +26,5 @@ public:
 	static bool confirmation(const string& t_confirmationMessage);
 	static void clearScreen();
 };
->>>>>>> remotes/repo2/main
 
 #endif //PROJECT_1_UTILITIES_H
