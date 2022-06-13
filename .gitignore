@@ -578,3 +578,6 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/c++,clion+all,macos,visualstudio,windows
+
+# Other User-specific
+**/Starter Files/
