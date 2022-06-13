@@ -236,7 +236,9 @@ string displayFrequencyHistogram(const string& input_file) {
 
 	// Constants storing the desired histogram width and header.
 	const string HISTOGRAM_HEADER = "items purchased";
-	const int HISTOGRAM_CHART_WIDTH = (maxNameWidth + maxQty + 6) > size(HISTOGRAM_HEADER) ? maxNameWidth + maxQty + 6 : static_cast<int>(size(HISTOGRAM_HEADER));
+	const int HISTOGRAM_CHART_WIDTH = (maxNameWidth + maxQty + 6) > size(HISTOGRAM_HEADER) ?
+			maxNameWidth + maxQty + 6 :
+			static_cast<int>(size(HISTOGRAM_HEADER));
 
 	// Variable for storing the frequency histogram.
 	stringstream histogramStream;
@@ -244,14 +246,18 @@ string displayFrequencyHistogram(const string& input_file) {
 	histogramStream << Utilities::generateHeader(HISTOGRAM_HEADER, HISTOGRAM_CHART_WIDTH);
 	// Loop through the inventory list.
 	for(InventoryItem item : inventoryList) {
-		histogramStream << item.getName() << Utilities::repeatingChar(' ', maxNameWidth - static_cast<int>(size(item.getName())));
+		histogramStream << item.getName();
+		histogramStream << Utilities::repeatingChar(' ',
+													maxNameWidth - static_cast<int>(size(item.getName())));
 		histogramStream << " || ";
 		histogramStream << Utilities::repeatingChar('*', item.getQty());
 		histogramStream << endl;
 	}
 	// Determines width of histogram end line.
 	// If the width is less that the header value, then set new header width.
-	int endLineWidth = HISTOGRAM_CHART_WIDTH < size(HISTOGRAM_HEADER) + 2 ? HISTOGRAM_CHART_WIDTH + 4 : HISTOGRAM_CHART_WIDTH;
+	int endLineWidth = HISTOGRAM_CHART_WIDTH < size(HISTOGRAM_HEADER) + 2 ?
+			HISTOGRAM_CHART_WIDTH + 4 :
+			HISTOGRAM_CHART_WIDTH;
 	histogramStream << Utilities::repeatingChar('=', endLineWidth) << endl;
 
 	// Return the string of the histogram.
