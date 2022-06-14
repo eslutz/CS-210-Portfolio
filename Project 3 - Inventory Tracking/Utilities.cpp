@@ -128,7 +128,7 @@ string Utilities::generateHeader(string t_headerValue, int t_headerWidth, const 
  *
  * @param t_input the string to convert.
  * @param t_number the output parameter for the converted number.
- * @return true for a failure, false for no failure.
+ * @return true for a success, false for a failure.
  */
 bool Utilities::validateIntegerInput(const string& t_input, int& t_number) {
 	// Variable for storing if input is a valid integer.
