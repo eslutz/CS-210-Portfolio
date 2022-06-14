@@ -6,7 +6,6 @@
  * Main Method
  */
 
-#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <Python.h>
@@ -296,7 +295,8 @@ string displayMenu(const string& menuInputError) {
  */
 unsigned int getMenuSelection() {
 	// Declares variables for storing the users input and the users validated selection.
-	unsigned int menuSelection = 0;
+	string userInput;
+	int menuSelection = 0;
 	bool validMenuSelection = true;
 	ostringstream invalidInputString;
 
@@ -310,11 +310,11 @@ unsigned int getMenuSelection() {
 		cout << displayMenu(invalidInputString.str());
 		// Gets the users input.
 		cout << "=> ";
-		cin >> menuSelection;
+		cin >> userInput;
 
 		// Validates the user's selection is of the valid type and within the menu option range.
-		validMenuSelection = !Utilities::validateInput(cin.fail())
-							 && (menuSelection > 0 && menuSelection <= 4);
+		validMenuSelection = Utilities::validateIntegerInput(userInput, menuSelection)
+							 && (menuSelection > 0 && menuSelection < 5);
 		// Resets the invalid input string.
 		invalidInputString.str("");
 	} while (!validMenuSelection);

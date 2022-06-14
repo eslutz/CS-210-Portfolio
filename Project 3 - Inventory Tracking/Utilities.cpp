@@ -124,20 +124,39 @@ string Utilities::generateHeader(string t_headerValue, int t_headerWidth, const 
 }
 
 /**
- * Checks cin.fail(), clearing cin if there was a failure, and returns the value of cin.fail().
+ * Takes a string and attempts to convert to an integer.
  *
- * @param t_inputState pass in cin.fail() to see if there was an error during processing.
+ * @param t_input the string to convert.
+ * @param t_number the output parameter for the converted number.
  * @return true for a failure, false for no failure.
  */
-bool Utilities::validateInput(bool t_inputState) {
-	// If true, clear cin, so it's ready for the next read attempt.
-	if (t_inputState) {
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+bool Utilities::validateIntegerInput(const string& t_input, int& t_number) {
+	// Variable for storing if input is a valid integer.
+	bool validNumber = true;
+	// Loop through each character of the string.
+	for (char character : t_input)
+	{
+		// If the character is not a number, set validNumber to false.
+		if (!isdigit(character)) {
+			validNumber = false;
+			break;
+		}
 	}
 
-	// Returns true or false based on what was passed in.
-	return t_inputState;
+	// If the input string is just digits, try to convert to an integer.
+	if (validNumber) {
+		try {
+
+			// Assign converted integer to the output parameter
+			t_number = stoi(t_input);
+		}
+		// Catch if the conversion fails and return false.
+		catch (...) {
+			validNumber = false;
+		}
+	}
+	// Return true for successful conversion.
+	return validNumber;
 }
 
 /**
