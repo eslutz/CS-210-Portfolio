@@ -306,7 +306,7 @@ unsigned int getMenuSelection() {
 		if (!validMenuSelection) {
 			invalidInputString << "Not a valid menu option, please try again ";
 		}
-		// Display the bank menu.
+		// Display the menu.
 		cout << displayMenu(invalidInputString.str());
 		// Gets the users input.
 		cout << "=> ";
@@ -355,14 +355,17 @@ int main() {
 			case 2:
 				Utilities::clearScreen();
 				// Gets the item the user wants to search for.
+				cout << Utilities::generateHeader("item search", 40);
 				cout << "Enter the item you would like to get the quantity for." << endl;
 				cout << "=> ";
 				cin >> itemName;
+				cout << Utilities::repeatingChar('=', 40) << endl;
 				// Calls the Python function to get quantity sold of the requested item.
 				itemQty = callIntFunc("get_item_qty", FREQUENCY_FILE, itemName);
 				// Displays the item and the quantity sold.
 				cout << "Item: " << itemName << endl;
 				cout << "Quantity: "<< itemQty << endl;
+				cout << Utilities::repeatingChar('=', 40) << endl;
 				break;
 			// Read from inventory list file and display histogram.
 			case 3:
@@ -382,8 +385,9 @@ int main() {
 		// Pause until the user chooses to continue.
 		Utilities::pauseUntilEnter();
 	}
+	Utilities::clearScreen();
 	// Display goodbye message.
-	cout << endl << "Goodbye!" << endl;
+	cout << endl << "Goodbye! Thanks for using Corner Grocer Inventory Tracker." << endl;
 
 	return 0;
 }

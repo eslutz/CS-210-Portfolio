@@ -9,7 +9,7 @@
 #ifndef PROJECT_3_INVENTORYITEM_H
 #define PROJECT_3_INVENTORYITEM_H
 
-#import <string>
+#include <string>
 
 using namespace std;
 

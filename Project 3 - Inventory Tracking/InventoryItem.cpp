@@ -6,6 +6,8 @@
  * Inventory Item Class
  */
 
+#include <string>
+
 #include "InventoryItem.h"
 
 /**

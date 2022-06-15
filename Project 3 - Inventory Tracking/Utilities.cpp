@@ -229,5 +229,3 @@ void Utilities::clearScreen() {
 	system("clear");
 #endif
 }
-
-
