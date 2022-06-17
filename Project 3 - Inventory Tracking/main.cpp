@@ -18,6 +18,53 @@
 using namespace std;
 
 /**
+ * Pass the name of the Python function you wish to call and the string parameter you want to send.
+ *
+ * @param proc Python function name.
+ * @param param1 String parameter for the Python function.
+ */
+void callFunc(const string& proc, const string& param)
+{
+	char *procName = new char[proc.length() + 1];
+	strcpy(procName, proc.c_str());
+
+	char *paramVal = new char[param.length() + 1];
+	strcpy(paramVal, param.c_str());
+
+
+	PyObject *pName, *pModule, *pDict, *pFunc, *pValue = nullptr, *presult = nullptr;
+	// Initialize the Python Interpreter
+	Py_Initialize();
+	PyRun_SimpleString("import sys");
+	PyRun_SimpleString("import os");
+	PyRun_SimpleString("sys.path.append(os.getcwd())");
+	pModule = PyImport_ImportModule("python_modules.PythonCode");
+	PyErr_Print();
+	pFunc = PyObject_GetAttrString(pModule, procName);
+	if (PyCallable_Check(pFunc))
+	{
+		pValue = Py_BuildValue("(s)", paramVal);
+		PyErr_Print();
+		PyObject_CallObject(pFunc, pValue);
+		PyErr_Print();
+	}
+	else
+	{
+		PyErr_Print();
+	}
+
+	// Clean up
+	Py_DECREF(pValue);
+	Py_DECREF(pModule);
+	// Finish the Python Interpreter
+	Py_Finalize();
+
+	// clean
+	delete[] procName;
+	delete[] paramVal;
+}
+
+/**
  * Pass the name of the Python function you wish to call and the two string parameters you want to send.
  *
  * @param proc Python function name.
@@ -26,30 +73,28 @@ using namespace std;
  */
 void callFunc(const string& proc, const string& param1, const string& param2)
 {
-	char *procname = new char[proc.length() + 1];
-	std::strcpy(procname, proc.c_str());
+	char *procName = new char[proc.length() + 1];
+	strcpy(procName, proc.c_str());
 
-	char *paramval1 = new char[param1.length() + 1];
-	std::strcpy(paramval1, param1.c_str());
+	char *paramVal1 = new char[param1.length() + 1];
+	strcpy(paramVal1, param1.c_str());
 
-	char *paramval2 = new char[param2.length() + 1];
-	std::strcpy(paramval2, param2.c_str());
+	char *paramVal2 = new char[param2.length() + 1];
+	strcpy(paramVal2, param2.c_str());
 
 
-	PyObject *pName, *pModule, *pDict, *pFunc, *pValue = nullptr, *presult = nullptr;
+	PyObject *pModule, *pFunc, *pValue = nullptr;
 	// Initialize the Python Interpreter
 	Py_Initialize();
-	// Build the name object
-	pName = PyUnicode_FromString((char*)"PythonCode");
-	// Load the module object
-	pModule = PyImport_Import(pName);
-	// pDict is a borrowed reference
-	pDict = PyModule_GetDict(pModule);
-	// pFunc is also a borrowed reference
-	pFunc = PyDict_GetItemString(pDict, procname);
+	PyRun_SimpleString("import sys");
+	PyRun_SimpleString("import os");
+	PyRun_SimpleString("sys.path.append(os.getcwd())");
+	pModule = PyImport_ImportModule("python_modules.PythonCode");
+	PyErr_Print();
+	pFunc = PyObject_GetAttrString(pModule, procName);
 	if (PyCallable_Check(pFunc))
 	{
-		pValue = Py_BuildValue("(s, s)", paramval1, paramval2);
+		pValue = Py_BuildValue("(s, s)", paramVal1, paramVal2);
 		PyErr_Print();
 		PyObject_CallObject(pFunc, pValue);
 		PyErr_Print();
@@ -59,68 +104,16 @@ void callFunc(const string& proc, const string& param1, const string& param2)
 		PyErr_Print();
 	}
 
-	Py_DECREF(pValue);
 	// Clean up
+	Py_DECREF(pValue);
 	Py_DECREF(pModule);
-	Py_DECREF(pName);
 	// Finish the Python Interpreter
 	Py_Finalize();
 
 	// clean
-	delete[] procname;
-	delete[] paramval1;
-	delete[] paramval2;
-}
-
-
-/**
- * Pass the name of the Python function you wish to call and the string parameter you want to send.
- *
- * @param proc Python function name.
- * @param param1 String parameter for the Python function.
- */
-void callFunc(const string& proc, const string& param)
-{
-	char *procname = new char[proc.length() + 1];
-	std::strcpy(procname, proc.c_str());
-
-	char *paramval = new char[param.length() + 1];
-	std::strcpy(paramval, param.c_str());
-
-
-	PyObject *pName, *pModule, *pDict, *pFunc, *pValue = nullptr, *presult = nullptr;
-	// Initialize the Python Interpreter
-	Py_Initialize();
-	// Build the name object
-	pName = PyUnicode_FromString((char*)"PythonCode");
-	// Load the module object
-	pModule = PyImport_Import(pName);
-	// pDict is a borrowed reference
-	pDict = PyModule_GetDict(pModule);
-	// pFunc is also a borrowed reference
-	pFunc = PyDict_GetItemString(pDict, procname);
-	if (PyCallable_Check(pFunc))
-	{
-		pValue = Py_BuildValue("(z)", paramval);
-		PyErr_Print();
-		PyObject_CallObject(pFunc, pValue);
-		PyErr_Print();
-	}
-	else
-	{
-		PyErr_Print();
-	}
-
-	Py_DECREF(pValue);
-	// Clean up
-	Py_DECREF(pModule);
-	Py_DECREF(pName);
-	// Finish the Python Interpreter
-	Py_Finalize();
-
-	// clean
-	delete[] procname;
-	delete[] paramval;
+	delete[] procName;
+	delete[] paramVal1;
+	delete[] paramVal2;
 }
 
 /**
@@ -133,30 +126,28 @@ void callFunc(const string& proc, const string& param)
  */
 int callIntFunc(const string& proc, const string& param1, const string& param2)
 {
-	char *procname = new char[proc.length() + 1];
-	std::strcpy(procname, proc.c_str());
+	char *procName = new char[proc.length() + 1];
+	strcpy(procName, proc.c_str());
 
-	char *paramval1 = new char[param1.length() + 1];
-	std::strcpy(paramval1, param1.c_str());
+	char *paramVal1 = new char[param1.length() + 1];
+	strcpy(paramVal1, param1.c_str());
 
-	char *paramval2 = new char[param2.length() + 1];
-	std::strcpy(paramval2, param2.c_str());
+	char *paramVal2 = new char[param2.length() + 1];
+	strcpy(paramVal2, param2.c_str());
 
 
-	PyObject *pName, *pModule, *pDict, *pFunc, *pValue = nullptr, *presult = nullptr;
+	PyObject *pModule, *pFunc, *pValue = nullptr, *presult = nullptr;
 	// Initialize the Python Interpreter
 	Py_Initialize();
-	// Build the name object
-	pName = PyUnicode_FromString((char*)"PythonCode");
-	// Load the module object
-	pModule = PyImport_Import(pName);
-	// pDict is a borrowed reference
-	pDict = PyModule_GetDict(pModule);
-	// pFunc is also a borrowed reference
-	pFunc = PyDict_GetItemString(pDict, procname);
+	PyRun_SimpleString("import sys");
+	PyRun_SimpleString("import os");
+	PyRun_SimpleString("sys.path.append(os.getcwd())");
+	pModule = PyImport_ImportModule("python_modules.PythonCode");
+	PyErr_Print();
+	pFunc = PyObject_GetAttrString(pModule, procName);
 	if (PyCallable_Check(pFunc))
 	{
-		pValue = Py_BuildValue("(s, s)", paramval1, paramval2);
+		pValue = Py_BuildValue("(s, s)", paramVal1, paramVal2);
 		PyErr_Print();
 		presult = PyObject_CallObject(pFunc, pValue);
 		PyErr_Print();
@@ -165,18 +156,17 @@ int callIntFunc(const string& proc, const string& param1, const string& param2)
 	{
 		PyErr_Print();
 	}
-	// printf("Result is %d\n", _PyLong_AsInt(presult));
-	Py_DECREF(pValue);
+
 	// Clean up
+	Py_DECREF(pValue);
 	Py_DECREF(pModule);
-	Py_DECREF(pName);
 	// Finish the Python Interpreter
 	Py_Finalize();
 
 	// clean
-	delete[] procname;
-	delete[] paramval1;
-	delete[] paramval2;
+	delete[] procName;
+	delete[] paramVal1;
+	delete[] paramVal2;
 
 	return _PyLong_AsInt(presult);
 }
@@ -325,8 +315,8 @@ unsigned int getMenuSelection() {
 
 int main() {
 	// Constants for needed file names and locations.
-	const string INPUT_FILE = "../CS210_Project_Three_Input_File.txt";
-	const string FREQUENCY_FILE = "../frequency.dat";
+	const string INPUT_FILE = "files/CS210_Project_Three_Input_File.txt";
+	const string FREQUENCY_FILE = "files/frequency.dat";
 	// Variable for current run state of the program.
 	bool quitProgram = false;
 

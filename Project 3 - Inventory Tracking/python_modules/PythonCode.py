@@ -96,9 +96,9 @@ def open_file(input_file):
     # Catch any exception opening file.
     except OSError:
         raise Exception("Unable to open file to read")
-
-    # Return lines from file.
-    return lines
+    else:
+        # Return lines from file.
+        return lines
 
 
 def get_inventory(input_file, output_file):
