@@ -32,7 +32,7 @@ void callFunc(const string& proc, const string& param)
 	strcpy(paramVal, param.c_str());
 
 
-	PyObject *pName, *pModule, *pDict, *pFunc, *pValue = nullptr, *presult = nullptr;
+	PyObject *pModule, *pFunc, *pValue = nullptr;
 	// Initialize the Python Interpreter
 	Py_Initialize();
 	PyRun_SimpleString("import sys");

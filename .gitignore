@@ -581,4 +581,5 @@ FodyWeavers.xsd
 
 # Other User-specific
 **/Starter Files/
-**/Project 3 - Programming Languages Explanation
+**/dist/
+.idea
