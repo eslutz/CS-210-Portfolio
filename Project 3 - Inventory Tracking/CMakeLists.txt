@@ -28,7 +28,7 @@ add_custom_command(
         ${CMAKE_SOURCE_DIR}/python_modules/ ${OUTPUT_DIR}/python_modules
 )
 
-# Cope files to dist folder.
+# Copy files to dist folder.
 add_custom_command(
         TARGET ${PROJECT_NAME} PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
