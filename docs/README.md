@@ -1,4 +1,4 @@
-# CS-210-Projects
+# CS-210-Portfolio
 
 Projects from CS-210 Programming Languages.
 
